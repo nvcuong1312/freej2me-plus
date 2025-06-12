@@ -1,3 +1,5 @@
+TOOLCHAIN_PATH ?= /home/cuongnv/toolchain/bin
+
 STATIC_LINKING := 0
 AR := ar
 
@@ -13,8 +15,7 @@ CORE_DIR := .
 TARGET_NAME := freej2me
 LIBM := -lm
 
-# Toolchain for RG35XXH
-TOOLCHAIN_PATH := /home/clay/toolchain/bin
+# Toolchain for
 CC := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-gcc
 CXX := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-g++
 AR := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-ar
