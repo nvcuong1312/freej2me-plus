@@ -16,23 +16,31 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y
       
-      - name: Clone aarch64 toolchain
+      # - name: Clone aarch64 toolchain
+      #   run: |
+      #     git clone --depth 1 https://github.com/RMerl/am-toolchains.git
+      #     echo "TOOLCHAIN ready at ./am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin"
+
+      #     mkdir -p /home/runner/toolchain
+      #     cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin /home/runner/toolchain/
+
+      - name: Clone toolchain and setup
         run: |
           git clone --depth 1 https://github.com/RMerl/am-toolchains.git
-          echo "TOOLCHAIN ready at ./am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin"
-
           mkdir -p /home/runner/toolchain
-          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin /home/runner/toolchain/
+          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/* /home/runner/toolchain/
+          chmod +x /home/runner/toolchain/bin/*
 
-      - name: Check if aarch64-buildroot-linux-gnu-gcc.br_real exists
+      - name: Patch .br_real issue
         run: |
-          if [ -f /home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-gcc.br_real ]; then
-            echo "✅ Toolchain real GCC exists."
-          else
-            echo "❌ Toolchain real GCC NOT found!" >&2
-            ls -l /home/runner/toolchain/bin/
-            exit 1
-          fi
+          for bin in gcc g++ ar as ld nm; do
+            real="/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.br_real"
+            if [ -f "$real" ]; then
+              mv "$real" "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.real"
+              echo -e "#!/bin/bash\n/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.real \"\$@\"" > "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}"
+              chmod +x "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}"
+            fi
+          done
           
       - name: build
         run: |
