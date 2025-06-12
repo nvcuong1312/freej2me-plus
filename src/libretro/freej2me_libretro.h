@@ -27,7 +27,7 @@
 #define PIPE_MAX_LEN 255
 
 
-#define PHONE_KEYS 19
+#define PHONE_KEYS 20
 
 /* Input mapping variables and descriptions */
 static const struct retro_controller_description port_1[] =
@@ -83,7 +83,7 @@ static const struct retro_input_descriptor desc[] =
     { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3,                                       "Num 5/Pointer Press" },
     { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT,                                   "Left Soft Key" },
     { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,                                    "Right Soft Key" },
-
+    { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3,                                       "Show OnScreen Keyboard" },
     { 0 },
 };
 
@@ -154,7 +154,7 @@ struct retro_core_option_v2_definition core_options[] =
             { "800x480",   NULL },
             { NULL, NULL },
         },
-        "240x320"
+        "320x240"
     },
     {
         "freej2me_rotate",
@@ -266,6 +266,34 @@ struct retro_core_option_v2_definition core_options[] =
             { NULL, NULL },
         },
         "off"
+    },
+    {
+        "freej2me_multimidletselector",
+        "System > Show Midlet selector",
+        "Show Midlet selector",
+        "Show Midlet selector",
+        "Show Midlet selector",
+        "system_settings",
+        {
+            { "off", "Disabled" },
+            { "on",  "Enabled" },
+            { NULL, NULL },
+        },
+        "off"
+    },
+    {
+        "freej2me_mousetimeout",
+        "System > Mouse pointer timeout",
+        "Mouse pointer timeout",
+        "Mouse pointer timeout",
+        "Mouse pointer timeout",
+        "system_settings",
+        {
+            { "0", "Short" },
+            { "1",  "Long" },
+            { NULL, NULL },
+        },
+        "0"
     },
     {
         "freej2me_logginglevel",
@@ -497,7 +525,7 @@ struct retro_core_option_definition core_options_v1 [] =
             { "800x480",   NULL },
             { NULL, NULL },
         },
-        "240x320"
+        "320x240"
     },
     {
         "freej2me_rotate",

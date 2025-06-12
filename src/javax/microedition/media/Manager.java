@@ -156,7 +156,7 @@ public class Manager
 	public static String[] getSupportedProtocols(String content_type)
 	{
 		Mobile.log(Mobile.LOG_WARNING, Manager.class.getPackage().getName() + "." + Manager.class.getSimpleName() + ": " + "Get Supported Media Protocols");
-		return new String[]{};
+		return new String[]{"device", "file", "http"};
 	}
 	
 	public static void playTone(int note, int duration, int volume) throws MediaException
@@ -230,7 +230,7 @@ public class Manager
 
 			// And save the copy to the specified dir
 			OutputStream outStream;
-			String dumpPath = "." + File.separatorChar + "FreeJ2MEDumps" + File.separatorChar + "Audio" + File.separatorChar + Mobile.getPlatform().loader.suitename + File.separatorChar;
+			String dumpPath = "." + File.separatorChar + "FreeJ2MEDumps" + File.separatorChar + "Audio" + File.separatorChar + Mobile.getPlatform().loader.getSuiteName() + File.separatorChar;
 			File dumpFile = new File(dumpPath);
 
 			if (!dumpFile.isDirectory()) { dumpFile.mkdirs(); }
