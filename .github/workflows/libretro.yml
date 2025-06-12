@@ -41,7 +41,11 @@ jobs:
               chmod +x "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}"
             fi
           done
-          
+
+      - name: Symlink libmpc.so.3
+        run: |
+          ln -sf /home/runner/toolchain/lib/libmpc.so.3.0.0 /home/runner/toolchain/lib/libmpc.so.3
+
       - name: build
         run: |
           cd src/libretro && make
