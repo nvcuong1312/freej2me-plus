@@ -1,6 +1,7 @@
 name: Libretro cores
 
 on:
+  workflow_dispatch:
   push:
     paths: 'src/libretro/**'
   pull_request:
