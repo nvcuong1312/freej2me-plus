@@ -20,10 +20,13 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/RMerl/am-toolchains.git
           echo "TOOLCHAIN ready at ./am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin"
-          
+
+          mkdir -p /home/runner/toolchain
+          mkdir -p /home/runner/toolchain/bin
+
+          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin/* /home/runner/toolchain/bin/
+
       - name: build
-        env:
-          TOOLCHAIN_PATH: ${{ github.workspace }}/am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin
         run: |
           cd src/libretro && make
           find . -name "*.o" -delete

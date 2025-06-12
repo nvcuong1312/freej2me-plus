@@ -1,5 +1,3 @@
-TOOLCHAIN_PATH ?= /home/cuongnv/toolchain/bin
-
 STATIC_LINKING := 0
 AR := ar
 
@@ -16,6 +14,7 @@ TARGET_NAME := freej2me
 LIBM := -lm
 
 # Toolchain for
+TOOLCHAIN_PATH := /home/runner/toolchain/bin
 CC := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-gcc
 CXX := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-g++
 AR := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-ar
