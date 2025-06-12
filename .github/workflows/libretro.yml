@@ -52,6 +52,8 @@ jobs:
           export PATH=/home/runner/toolchain/bin:$PATH
           cd src/libretro && make
           find . -name "*.o" -delete
+          platform=unix CC=/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-gcc CXX=/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-g++ make
+
 
       - name: Compute commit short SHA
         id: shortsha
