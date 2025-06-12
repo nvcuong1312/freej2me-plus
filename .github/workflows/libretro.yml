@@ -24,6 +24,16 @@ jobs:
           mkdir -p /home/runner/toolchain
           cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin /home/runner/toolchain/
 
+      - name: Check if aarch64-buildroot-linux-gnu-gcc.br_real exists
+        run: |
+          if [ -f /home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-gcc.br_real ]; then
+            echo "✅ Toolchain real GCC exists."
+          else
+            echo "❌ Toolchain real GCC NOT found!" >&2
+            ls -l /home/runner/toolchain/bin/
+            exit 1
+          fi
+          
       - name: build
         run: |
           cd src/libretro && make
