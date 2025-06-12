@@ -46,6 +46,7 @@ jobs:
         run: |
           ln -sf /home/runner/toolchain/lib/libmpc.so.3.0.0 /home/runner/toolchain/lib/libmpc.so.3
           export LD_LIBRARY_PATH=/home/runner/toolchain/lib:$LD_LIBRARY_PATH
+          export PATH=/home/runner/toolchain/bin:$PATH
 
       - name: build
         run: |
