@@ -12,12 +12,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: build linux & win32 cores
+      - name: Install build dependencies
         run: |
           sudo apt-get update && sudo apt-get install -y mingw-w64
+      
+      # - name: Clone aarch64 toolchain
+      #   run: |
+      #     git clone --depth 1 https://github.com/RMerl/am-toolchains.git
+      #     echo "TOOLCHAIN ready at ./am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin"
+
+      #     mkdir -p /home/runner/toolchain
+      #     cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin /home/runner/toolchain/
+
+      - name: Clone toolchain and setup
+        run: |
+          git clone --depth 1 https://github.com/RMerl/am-toolchains.git
+          mkdir -p /home/runner/toolchain
+          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/* /home/runner/toolchain/
+          chmod +x /home/runner/toolchain/bin/*
+
+      - name: Patch .br_real issue
+        run: |
+          for bin in gcc g++ ar as ld nm; do
+            real="/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.br_real"
+            if [ -f "$real" ]; then
+              mv "$real" "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.real"
+              echo -e "#!/bin/bash\n/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}.real \"\$@\"" > "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}"
+              chmod +x "/home/runner/toolchain/bin/aarch64-buildroot-linux-gnu-${bin}"
+            fi
+          done
+
+      - name: Symlink libmpc.so.3
+        run: |
+          ln -sf /home/runner/toolchain/lib/libmpc.so.3.0.0 /home/runner/toolchain/lib/libmpc.so.3
+
+      - name: build
+        run: |
+          export LD_LIBRARY_PATH=/home/runner/toolchain/lib:$LD_LIBRARY_PATH
+          export PATH=/home/runner/toolchain/bin:$PATH
           cd src/libretro && make
           find . -name "*.o" -delete
-          platform=win CC=x86_64-w64-mingw32-gcc CPP=x86_64-w64-mingw32-g++ CXX=x86_64-w64-mingw32-g++ make
+
       - name: Compute commit short SHA
         id: shortsha
         run: |
