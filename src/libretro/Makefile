@@ -19,6 +19,8 @@ CC := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-gcc
 CXX := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-g++
 AR := $(TOOLCHAIN_PATH)/aarch64-buildroot-linux-gnu-ar
 
+include Makefile.common
+
 # Compiler flags for RG35XXH
 CFLAGS := -Wall -Wno-unused-result -D__LIBRETRO__ -fPIC -O3
 CXXFLAGS := -Wall -Wno-unused-result -D__LIBRETRO__ -fPIC -O3
