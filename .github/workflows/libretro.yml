@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install build dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y mingw-w64
+          sudo apt-get update && sudo apt-get install -y
       
       - name: Clone aarch64 toolchain
         run: |
@@ -22,9 +22,7 @@ jobs:
           echo "TOOLCHAIN ready at ./am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin"
 
           mkdir -p /home/runner/toolchain
-          mkdir -p /home/runner/toolchain/bin
-
-          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin/* /home/runner/toolchain/bin/
+          cp -r am-toolchains/brcm-arm-hnd/crosstools-aarch64-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin /home/runner/toolchain/
 
       - name: build
         run: |
